@@ -1,18 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMover : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private float _moveSpeed;
 
-    // Update is called once per frame
-    void Update()
+    public void Move(float inputDirection)
     {
-        
+        Vector3 moveVector = Vector3.zero;
+
+        if (inputDirection < 0)
+        {
+            moveVector = new Vector3(-1, 0, 0) * _moveSpeed;
+        }
+        if (inputDirection > 0)
+        {
+            moveVector = new Vector3(1, 0, 0) * _moveSpeed;
+        }
+
+        transform.Translate(moveVector * Time.deltaTime);
     }
 }
