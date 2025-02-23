@@ -13,9 +13,6 @@ public class Player : MonoBehaviour
         _playerMover = GetComponent<PlayerMover>();
     }
 
-    private void Start()
-    {
-    }
 
     private void Update()
     {
@@ -26,10 +23,14 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         _playerInput.Enable();
+
+        _playerInput.Player.Jump.performed += cntx => _playerMover.Jump();
     }
 
     private void OnDisable()
     {
+        _playerInput.Player.Jump.performed -= cntx => _playerMover.Jump();
+
         _playerInput.Disable();
     }
 }

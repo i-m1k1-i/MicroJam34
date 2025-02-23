@@ -3,20 +3,51 @@ using UnityEngine;
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _jumpPower;
+
+    private bool _onGround;
+    private Rigidbody2D _rigidbody;
+
+    private void Start()
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        LayerMask layerMask = ~LayerMask.GetMask("Player");
+        _onGround = Physics2D.Raycast(transform.position, transform.up * -1, 0.7f, layerMask);
+    }
 
     public void Move(float inputDirection)
     {
-        Vector3 moveVector = Vector3.zero;
-
+        float horizontalMove = 0;
         if (inputDirection < 0)
         {
-            moveVector = new Vector3(-1, 0, 0) * _moveSpeed;
+            horizontalMove = -1;
         }
         if (inputDirection > 0)
         {
-            moveVector = new Vector3(1, 0, 0) * _moveSpeed;
+            horizontalMove = 1;
         }
 
-        transform.Translate(moveVector * Time.deltaTime);
+        Vector2 moveVector = new Vector2(horizontalMove * _moveSpeed, 0);
+        transform.position = (_rigidbody.position + moveVector * Time.deltaTime);
+    }
+
+    public void Jump()
+    {
+        if (_onGround)
+        {
+            Vector2 jumpVector = new(0, _jumpPower);
+             _rigidbody.AddForce(jumpVector, ForceMode2D.Impulse);
+            _onGround = false;
+        }
+        Debug.Log("Jump");
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, transform.position + (transform.up * -1) * 0.7f);
     }
 }
