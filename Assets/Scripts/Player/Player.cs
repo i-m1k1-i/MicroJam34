@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     private void OnShoot(InputAction.CallbackContext context)
     {
         _shooter.Shoot();
+        AudioManager.Instance.PlayPlayerShot();
     }
 
     private void OnEnable()

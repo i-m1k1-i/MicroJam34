@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
 
+    public static event UnityAction Dead;
     public event UnityAction<int> DamageTaken;
 
     private void Awake()
@@ -16,6 +17,7 @@ public class Health : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
+        DamageTaken?.Invoke(_currentHealth);
 
         if (_currentHealth <= 0)
         {
@@ -23,8 +25,10 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void Death()
+    public void Death()
     {
+        Dead?.Invoke();
+        AudioManager.Instance.PlayEnemyDeath();
         Destroy(gameObject);
     }
 }
