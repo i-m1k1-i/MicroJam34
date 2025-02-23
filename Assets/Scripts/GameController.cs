@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
             StopGame();
         }
 
-        if (_overallTime >= 180)
+        if (_overallTime >= 230)
         {
             _loseCanvas.gameObject.SetActive(true);
             Debug.Log("Lose");
