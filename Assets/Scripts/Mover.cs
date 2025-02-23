@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMover : MonoBehaviour
+public class Mover : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
@@ -15,7 +15,7 @@ public class PlayerMover : MonoBehaviour
 
     private void Update()
     {
-        LayerMask layerMask = ~LayerMask.GetMask("Player");
+        LayerMask layerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
         _onGround = Physics2D.Raycast(transform.position, transform.up * -1, 0.7f, layerMask);
     }
 
