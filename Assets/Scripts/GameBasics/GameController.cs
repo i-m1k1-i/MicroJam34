@@ -46,18 +46,11 @@ public class GameController : MonoBehaviour
         _overallTime = Mathf.Clamp(_overallTime - _waveTime, 0, float.MaxValue);
         _currentWaveIndex++;
 
-        if (_overallTime <= 0)
+        if (CheckGameEnd())
         {
-            GameEnd?.Invoke(true);
-            StopGame();
             return;
         }
-        if (_overallTime >= _loseTime || _currentWaveIndex >= _waves.Length)
-        {
-            GameEnd?.Invoke(false);
-            StopGame();
-            return;
-        }
+        
         if (_currentWaveIndex == 4)
         {
             DoubleShotWaveReached?.Invoke();
@@ -68,6 +61,24 @@ public class GameController : MonoBehaviour
         _waveTime = _currentWave.WaveTime;
         _spawner.SetNewWave(_currentWave.EnemyAmount, _currentWave.SpawnTime);
         _killsInWave = 0;
+    }
+
+    private bool CheckGameEnd()
+    {
+        if (_overallTime <= 0)
+        {
+            GameEnd?.Invoke(true);
+            StopGame();
+            return true;
+        }
+        if (_overallTime >= _loseTime || _currentWaveIndex >= _waves.Length)
+        {
+            GameEnd?.Invoke(false);
+            StopGame();
+            return true;
+        }
+
+        return false;
     }
 
     private void StopGame()
