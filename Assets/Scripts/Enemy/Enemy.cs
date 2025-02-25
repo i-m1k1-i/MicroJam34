@@ -4,11 +4,12 @@ using UnityEngine.Events;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Mover _mover;
+    [SerializeField] private float _Damage;
 
     private Transform _target;
     private float _inputDirection;
 
-    public static event UnityAction ReachedPortal;
+    public static event UnityAction<float> TargetReached;
 
     private void Start()
     {
@@ -35,10 +36,10 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<Portal>(out Portal _))
+        if (collision.TryGetComponent<Spaceship>(out Spaceship _))
         {
-            GetComponent<Health>().Death();
-            ReachedPortal?.Invoke();
+            GetComponent<EnemyHealth>().Death();
+            TargetReached?.Invoke(10);
         }
     }
 }

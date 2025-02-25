@@ -1947,6 +1947,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 309020634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &909406757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 909406759}
+  - component: {fileID: 909406758}
+  m_Layer: 0
+  m_Name: UIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &909406758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909406757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14a2018b8a0d2145b0eedd442c827d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameController: {fileID: 1692430508}
+  _winCanvas: {fileID: 927120980}
+  _loseCanvas: {fileID: 200568727}
+  _doubleShotCanvas: {fileID: 1272654457}
+--- !u!4 &909406759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909406757}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 565.7027, y: 310.9082, z: -2.886842}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &927120976
 GameObject:
   m_ObjectHideFlags: 0
@@ -3376,10 +3424,8 @@ MonoBehaviour:
     WaveTime: 55
     SpawnTime: 0.6
   _spawner: {fileID: 531467067}
-  _doubleShotCanvas: {fileID: 1272654457}
-  _winCanvas: {fileID: 927120980}
-  _loseCanvas: {fileID: 200568727}
   _overallTime: 170
+  _loseTime: 230
   _pause: 0
 --- !u!4 &1692430509
 Transform:
@@ -3856,7 +3902,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1810042088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd6ba6ae6d37b4b4fb74ec3c658bfaef, type: 3}
+  m_Script: {fileID: 11500000, guid: cd277acad9e0f56439219abc6ff87354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1901179153
@@ -4420,12 +4466,13 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1692430509}
+  - {fileID: 909406759}
+  - {fileID: 2002205862}
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1901179157}
   - {fileID: 2085998618}
-  - {fileID: 2002205862}
-  - {fileID: 1692430509}
   - {fileID: 531467068}
   - {fileID: 766813196}
   - {fileID: 884028942}

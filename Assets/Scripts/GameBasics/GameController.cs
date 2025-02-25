@@ -6,14 +6,13 @@ public class GameController : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private Wave[] _waves;
     [SerializeField] private EnemySpawner _spawner;
-    [SerializeField] private Canvas _doubleShotCanvas;
-    [SerializeField] private Canvas _winCanvas;
-    [SerializeField] private Canvas _loseCanvas;
     [SerializeField] private float _overallTime = 3 * 45;
+    [SerializeField] private float _loseTime = 230;
+
 
     private int _currentWaveIndex = 0;
     private Wave _currentWave;
-    private int _killedEnemies;
+    private int _killsInWave;
     private float _waveTime;
     public bool _pause;
 
@@ -21,6 +20,8 @@ public class GameController : MonoBehaviour
 
     public event UnityAction<float> TimePassed;
     public event UnityAction<int> WaveCleared;
+    public event UnityAction DoubleShotWaveReached;
+    public event UnityAction<bool> GameEnd;
 
     private void Start()
     {
@@ -41,40 +42,32 @@ public class GameController : MonoBehaviour
         {
             return;
         }
+
         _overallTime = Mathf.Clamp(_overallTime - _waveTime, 0, float.MaxValue);
+        _currentWaveIndex++;
+
         if (_overallTime <= 0)
         {
-            _winCanvas.gameObject.SetActive(true);
-            Debug.Log("Win");
+            GameEnd?.Invoke(true);
             StopGame();
+            return;
         }
-
-        if (_overallTime >= 230)
+        if (_overallTime >= _loseTime || _currentWaveIndex >= _waves.Length)
         {
-            _loseCanvas.gameObject.SetActive(true);
-            Debug.Log("Lose");
+            GameEnd?.Invoke(false);
             StopGame();
+            return;
         }
-        Debug.Log("Wave cleared");
-        Debug.Log(_overallTime);
+        if (_currentWaveIndex == 4)
+        {
+            DoubleShotWaveReached?.Invoke();
+        }
 
-        _currentWaveIndex++;
+        WaveCleared?.Invoke(_currentWaveIndex);
         _currentWave = _waves[_currentWaveIndex];
         _waveTime = _currentWave.WaveTime;
         _spawner.SetNewWave(_currentWave.EnemyAmount, _currentWave.SpawnTime);
-        _killedEnemies = 0;
-
-        WaveCleared?.Invoke(_currentWaveIndex);
-
-        if (_currentWaveIndex + 1 == 5)
-        {
-            _doubleShotCanvas.gameObject.SetActive(true);
-        }
-        if (_currentWaveIndex >= _waves.Length)
-        {
-            _loseCanvas.gameObject.SetActive(true);
-            StopGame();
-        }
+        _killsInWave = 0;
     }
 
     private void StopGame()
@@ -85,28 +78,28 @@ public class GameController : MonoBehaviour
 
     private void HandleKill()
     {
-        _killedEnemies++;
-        if (_killedEnemies == _currentWave.EnemyAmount)
+        _killsInWave++;
+        if (_killsInWave == _currentWave.EnemyAmount)
         {
             NextWave();
         }
     }
 
-    private void HandlePortalReaching()
+    private void HandleTargetReaching(float damageTime)
     {
-        _waveTime -= 10;
+        _waveTime -= damageTime;
         TimePassed?.Invoke(_waveTime);
     }
 
     private void OnEnable()
     {
-        Health.Dead += HandleKill;
-        Enemy.ReachedPortal += HandlePortalReaching;
+        EnemyHealth.Dead += HandleKill;
+        Enemy.TargetReached += HandleTargetReaching;
     }
 
     private void OnDisable()
     {
-        Health.Dead -= HandleKill;
-        Enemy.ReachedPortal -= HandlePortalReaching;
+        EnemyHealth.Dead -= HandleKill;
+        Enemy.TargetReached -= HandleTargetReaching;
     }
 }

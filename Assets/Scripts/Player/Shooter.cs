@@ -27,21 +27,18 @@ public class Shooter : MonoBehaviour
         bullet.Set(_shootPoint.position, _shootPoint.position - transform.position);
     }
 
-    private void HandleWaveClear(int waveIndex)
+    private void ActivateDoubleShot()
     {
-        if (waveIndex + 1 == 5)
-        {
-            _doubleShot = true;
-        }
+        _doubleShot = true;
     }
 
     private void OnEnable()
     {
-        _gameController.WaveCleared += HandleWaveClear;
+        _gameController.DoubleShotWaveReached += ActivateDoubleShot;
     }
 
     private void OnDisable()
     {
-        _gameController.WaveCleared -= HandleWaveClear;
+        _gameController.DoubleShotWaveReached -= ActivateDoubleShot;
     }
 }
